@@ -1,0 +1,28 @@
+C:\Users\aguered\documents\visual studio 2017\Projects\App\DataAccess\bin\Debug\DataAccess.dll.config
+C:\Users\aguered\documents\visual studio 2017\Projects\App\DataAccess\bin\Debug\DataAccess.dll
+C:\Users\aguered\documents\visual studio 2017\Projects\App\DataAccess\bin\Debug\DataAccess.pdb
+C:\Users\aguered\documents\visual studio 2017\Projects\App\DataAccess\bin\Debug\EntityFramework.dll
+C:\Users\aguered\documents\visual studio 2017\Projects\App\DataAccess\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\aguered\documents\visual studio 2017\Projects\App\DataAccess\bin\Debug\Model.dll
+C:\Users\aguered\documents\visual studio 2017\Projects\App\DataAccess\bin\Debug\Model.pdb
+C:\Users\aguered\documents\visual studio 2017\Projects\App\DataAccess\bin\Debug\EntityFramework.xml
+C:\Users\aguered\documents\visual studio 2017\Projects\App\DataAccess\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\aguered\documents\visual studio 2017\Projects\App\DataAccess\obj\Debug\DataAccess.csprojResolveAssemblyReference.cache
+C:\Users\aguered\documents\visual studio 2017\Projects\App\DataAccess\obj\Debug\DataAccess.dll
+C:\Users\aguered\documents\visual studio 2017\Projects\App\DataAccess\obj\Debug\DataAccess.pdb
+C:\Users\aguered\documents\visual studio 2017\Projects\App\DataAccess\obj\Debug\DataAccess.Migrations.Creation.resources
+C:\Users\aguered\documents\visual studio 2017\Projects\App\DataAccess\obj\Debug\DataAccess.csproj.GenerateResource.Cache
+E:\App\DataAccess\bin\Debug\DataAccess.dll.config
+E:\App\DataAccess\bin\Debug\DataAccess.dll
+E:\App\DataAccess\bin\Debug\DataAccess.pdb
+E:\App\DataAccess\bin\Debug\EntityFramework.dll
+E:\App\DataAccess\bin\Debug\EntityFramework.SqlServer.dll
+E:\App\DataAccess\bin\Debug\Model.dll
+E:\App\DataAccess\bin\Debug\Model.pdb
+E:\App\DataAccess\bin\Debug\EntityFramework.xml
+E:\App\DataAccess\bin\Debug\EntityFramework.SqlServer.xml
+E:\App\DataAccess\obj\Debug\DataAccess.csprojResolveAssemblyReference.cache
+E:\App\DataAccess\obj\Debug\DataAccess.Migrations.Creation.resources
+E:\App\DataAccess\obj\Debug\DataAccess.csproj.GenerateResource.Cache
+E:\App\DataAccess\obj\Debug\DataAccess.dll
+E:\App\DataAccess\obj\Debug\DataAccess.pdb

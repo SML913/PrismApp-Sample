@@ -1,0 +1,119 @@
+C:\Users\aguered\documents\visual studio 2017\Projects\App\UI\bin\Debug\UI.exe.config
+C:\Users\aguered\documents\visual studio 2017\Projects\App\UI\bin\Debug\UI.exe
+C:\Users\aguered\documents\visual studio 2017\Projects\App\UI\bin\Debug\UI.pdb
+C:\Users\aguered\documents\visual studio 2017\Projects\App\UI\bin\Debug\Autofac.dll
+C:\Users\aguered\documents\visual studio 2017\Projects\App\UI\bin\Debug\Prism.dll
+C:\Users\aguered\documents\visual studio 2017\Projects\App\UI\bin\Debug\Autofac.xml
+C:\Users\aguered\documents\visual studio 2017\Projects\App\UI\bin\Debug\Prism.xml
+C:\Users\aguered\documents\visual studio 2017\Projects\App\UI\obj\Debug\App.g.cs
+C:\Users\aguered\documents\visual studio 2017\Projects\App\UI\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\aguered\documents\visual studio 2017\Projects\App\UI\obj\Debug\UI_MarkupCompile.cache
+C:\Users\aguered\documents\visual studio 2017\Projects\App\UI\obj\Debug\UI_MarkupCompile.lref
+C:\Users\aguered\documents\visual studio 2017\Projects\App\UI\obj\Debug\UI.g.resources
+C:\Users\aguered\documents\visual studio 2017\Projects\App\UI\obj\Debug\UI.Properties.Resources.resources
+C:\Users\aguered\documents\visual studio 2017\Projects\App\UI\obj\Debug\UI.csproj.GenerateResource.Cache
+C:\Users\aguered\documents\visual studio 2017\Projects\App\UI\obj\Debug\UI.exe
+C:\Users\aguered\documents\visual studio 2017\Projects\App\UI\obj\Debug\UI.pdb
+C:\Users\aguered\documents\visual studio 2017\Projects\App\UI\obj\Debug\UI.csprojResolveAssemblyReference.cache
+C:\Users\aguered\documents\visual studio 2017\Projects\App\UI\bin\Debug\DataAccess.dll
+C:\Users\aguered\documents\visual studio 2017\Projects\App\UI\bin\Debug\EntityFramework.dll
+C:\Users\aguered\documents\visual studio 2017\Projects\App\UI\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\aguered\documents\visual studio 2017\Projects\App\UI\bin\Debug\Model.dll
+C:\Users\aguered\documents\visual studio 2017\Projects\App\UI\bin\Debug\DataAccess.pdb
+C:\Users\aguered\documents\visual studio 2017\Projects\App\UI\bin\Debug\DataAccess.dll.config
+C:\Users\aguered\documents\visual studio 2017\Projects\App\UI\bin\Debug\Model.pdb
+C:\Users\aguered\documents\visual studio 2017\Projects\App\UI\bin\Debug\EntityFramework.xml
+C:\Users\aguered\documents\visual studio 2017\Projects\App\UI\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\aguered\documents\visual studio 2017\Projects\App\UI\obj\Debug\Views\CompanyDetailView.baml
+C:\Users\aguered\documents\visual studio 2017\Projects\App\UI\obj\Debug\Views\CompanyListView.baml
+C:\Users\aguered\documents\visual studio 2017\Projects\App\UI\obj\Debug\Views\EmployeeDetailView.baml
+C:\Users\aguered\documents\visual studio 2017\Projects\App\UI\obj\Debug\Views\EmployeeListView.baml
+C:\Users\aguered\documents\visual studio 2017\Projects\App\UI\obj\Debug\Views\MainWindow.g.cs
+C:\Users\aguered\documents\visual studio 2017\Projects\App\UI\obj\Debug\Views\CompanyDetailView.g.cs
+C:\Users\aguered\documents\visual studio 2017\Projects\App\UI\obj\Debug\Views\CompanyListView.g.cs
+C:\Users\aguered\documents\visual studio 2017\Projects\App\UI\obj\Debug\Views\EmployeeDetailView.g.cs
+C:\Users\aguered\documents\visual studio 2017\Projects\App\UI\obj\Debug\Views\EmployeeListView.g.cs
+C:\Users\aguered\documents\visual studio 2017\Projects\App\UI\bin\Debug\Microsoft.Practices.Prism.Composition.dll
+C:\Users\aguered\documents\visual studio 2017\Projects\App\UI\bin\Debug\Microsoft.Practices.Prism.Mvvm.Desktop.dll
+C:\Users\aguered\documents\visual studio 2017\Projects\App\UI\bin\Debug\Microsoft.Practices.Prism.Mvvm.dll
+C:\Users\aguered\documents\visual studio 2017\Projects\App\UI\bin\Debug\Microsoft.Practices.Prism.PubSubEvents.dll
+C:\Users\aguered\documents\visual studio 2017\Projects\App\UI\bin\Debug\Microsoft.Practices.Prism.SharedInterfaces.dll
+C:\Users\aguered\documents\visual studio 2017\Projects\App\UI\bin\Debug\Microsoft.Practices.ServiceLocation.dll
+C:\Users\aguered\documents\visual studio 2017\Projects\App\UI\bin\Debug\Microsoft.Practices.Unity.Configuration.dll
+C:\Users\aguered\documents\visual studio 2017\Projects\App\UI\bin\Debug\Microsoft.Practices.Unity.dll
+C:\Users\aguered\documents\visual studio 2017\Projects\App\UI\bin\Debug\Microsoft.Practices.Unity.RegistrationByConvention.dll
+C:\Users\aguered\documents\visual studio 2017\Projects\App\UI\bin\Debug\Prism.Unity.Wpf.dll
+C:\Users\aguered\documents\visual studio 2017\Projects\App\UI\bin\Debug\Prism.Wpf.dll
+C:\Users\aguered\documents\visual studio 2017\Projects\App\UI\bin\Debug\System.Windows.Interactivity.dll
+C:\Users\aguered\documents\visual studio 2017\Projects\App\UI\bin\Debug\Microsoft.Practices.Prism.Composition.xml
+C:\Users\aguered\documents\visual studio 2017\Projects\App\UI\bin\Debug\Microsoft.Practices.Prism.Mvvm.xml
+C:\Users\aguered\documents\visual studio 2017\Projects\App\UI\bin\Debug\Microsoft.Practices.Prism.SharedInterfaces.xml
+C:\Users\aguered\documents\visual studio 2017\Projects\App\UI\bin\Debug\Microsoft.Practices.ServiceLocation.pdb
+C:\Users\aguered\documents\visual studio 2017\Projects\App\UI\bin\Debug\Microsoft.Practices.ServiceLocation.xml
+C:\Users\aguered\documents\visual studio 2017\Projects\App\UI\bin\Debug\Microsoft.Practices.Unity.xml
+C:\Users\aguered\documents\visual studio 2017\Projects\App\UI\bin\Debug\Microsoft.Practices.Unity.Configuration.xml
+C:\Users\aguered\documents\visual studio 2017\Projects\App\UI\bin\Debug\Microsoft.Practices.Unity.RegistrationByConvention.xml
+C:\Users\aguered\documents\visual studio 2017\Projects\App\UI\bin\Debug\Prism.Unity.Wpf.xml
+C:\Users\aguered\documents\visual studio 2017\Projects\App\UI\bin\Debug\Prism.Wpf.xml
+C:\Users\aguered\documents\visual studio 2017\Projects\App\UI\obj\Debug\Views\MainWindow.baml
+E:\App\UI\bin\Debug\UI.exe.config
+E:\App\UI\obj\Debug\UI.exe
+E:\App\UI\obj\Debug\UI.pdb
+E:\App\UI\obj\Debug\UI.csprojResolveAssemblyReference.cache
+E:\App\UI\obj\Debug\Views\CompanyDetailView.baml
+E:\App\UI\obj\Debug\Views\EmployeeDetailView.baml
+E:\App\UI\obj\Debug\Views\CompanyDetailView.g.cs
+E:\App\UI\obj\Debug\Views\EmployeeDetailView.g.cs
+E:\App\UI\obj\Debug\Views\MainWindow.g.cs
+E:\App\UI\obj\Debug\Views\CompanyListView.g.cs
+E:\App\UI\obj\Debug\Views\EmployeeListView.g.cs
+E:\App\UI\obj\Debug\App.g.cs
+E:\App\UI\obj\Debug\GeneratedInternalTypeHelper.g.cs
+E:\App\UI\obj\Debug\UI_MarkupCompile.cache
+E:\App\UI\obj\Debug\UI_MarkupCompile.lref
+E:\App\UI\bin\Debug\UI.exe
+E:\App\UI\bin\Debug\UI.pdb
+E:\App\UI\bin\Debug\Autofac.dll
+E:\App\UI\bin\Debug\DataAccess.dll
+E:\App\UI\bin\Debug\EntityFramework.dll
+E:\App\UI\bin\Debug\EntityFramework.SqlServer.dll
+E:\App\UI\bin\Debug\Microsoft.Practices.Prism.Composition.dll
+E:\App\UI\bin\Debug\Microsoft.Practices.Prism.Mvvm.Desktop.dll
+E:\App\UI\bin\Debug\Microsoft.Practices.Prism.Mvvm.dll
+E:\App\UI\bin\Debug\Microsoft.Practices.Prism.PubSubEvents.dll
+E:\App\UI\bin\Debug\Microsoft.Practices.Prism.SharedInterfaces.dll
+E:\App\UI\bin\Debug\Microsoft.Practices.ServiceLocation.dll
+E:\App\UI\bin\Debug\Microsoft.Practices.Unity.Configuration.dll
+E:\App\UI\bin\Debug\Microsoft.Practices.Unity.dll
+E:\App\UI\bin\Debug\Microsoft.Practices.Unity.RegistrationByConvention.dll
+E:\App\UI\bin\Debug\Model.dll
+E:\App\UI\bin\Debug\Prism.dll
+E:\App\UI\bin\Debug\Prism.Unity.Wpf.dll
+E:\App\UI\bin\Debug\Prism.Wpf.dll
+E:\App\UI\bin\Debug\System.Windows.Interactivity.dll
+E:\App\UI\bin\Debug\DataAccess.pdb
+E:\App\UI\bin\Debug\Model.pdb
+E:\App\UI\bin\Debug\Autofac.xml
+E:\App\UI\bin\Debug\EntityFramework.xml
+E:\App\UI\bin\Debug\EntityFramework.SqlServer.xml
+E:\App\UI\bin\Debug\Microsoft.Practices.Prism.Composition.xml
+E:\App\UI\bin\Debug\Microsoft.Practices.Prism.Mvvm.xml
+E:\App\UI\bin\Debug\Microsoft.Practices.Prism.SharedInterfaces.xml
+E:\App\UI\bin\Debug\Microsoft.Practices.ServiceLocation.pdb
+E:\App\UI\bin\Debug\Microsoft.Practices.ServiceLocation.xml
+E:\App\UI\bin\Debug\Microsoft.Practices.Unity.xml
+E:\App\UI\bin\Debug\Microsoft.Practices.Unity.Configuration.xml
+E:\App\UI\bin\Debug\Microsoft.Practices.Unity.RegistrationByConvention.xml
+E:\App\UI\bin\Debug\Prism.xml
+E:\App\UI\bin\Debug\Prism.Unity.Wpf.xml
+E:\App\UI\bin\Debug\Prism.Wpf.xml
+E:\App\UI\obj\Debug\Views\MainWindow.baml
+E:\App\UI\obj\Debug\Views\CompanyListView.baml
+E:\App\UI\obj\Debug\Views\EmployeeListView.baml
+E:\App\UI\obj\Debug\UI.g.resources
+E:\App\UI\obj\Debug\UI.Properties.Resources.resources
+E:\App\UI\obj\Debug\UI.csproj.GenerateResource.Cache
+E:\App\UI\bin\Debug\MahApps.Metro.dll
+E:\App\UI\bin\Debug\MahApps.Metro.pdb
+E:\App\UI\bin\Debug\MahApps.Metro.xml
+E:\App\UI\obj\Debug\App.baml

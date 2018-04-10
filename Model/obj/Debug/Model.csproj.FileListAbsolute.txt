@@ -1,0 +1,10 @@
+C:\Users\aguered\documents\visual studio 2017\Projects\App\Model\bin\Debug\Model.dll
+C:\Users\aguered\documents\visual studio 2017\Projects\App\Model\bin\Debug\Model.pdb
+C:\Users\aguered\documents\visual studio 2017\Projects\App\Model\obj\Debug\Model.csprojResolveAssemblyReference.cache
+C:\Users\aguered\documents\visual studio 2017\Projects\App\Model\obj\Debug\Model.dll
+C:\Users\aguered\documents\visual studio 2017\Projects\App\Model\obj\Debug\Model.pdb
+E:\App\Model\bin\Debug\Model.dll
+E:\App\Model\bin\Debug\Model.pdb
+E:\App\Model\obj\Debug\Model.csprojResolveAssemblyReference.cache
+E:\App\Model\obj\Debug\Model.dll
+E:\App\Model\obj\Debug\Model.pdb
