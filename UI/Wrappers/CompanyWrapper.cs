@@ -1,5 +1,4 @@
-﻿using System.Windows;
-using Microsoft.Practices.Prism.Mvvm;
+﻿using System.Collections.Generic;
 using Model;
 using UI.ViewModels;
 
@@ -32,6 +31,18 @@ namespace UI.Wrappers
             }
             
             
+        }
+        public ICollection<Employee> Employees
+        {
+            get { return Model?.Employees; }
+            set
+            {
+
+                Model.Employees = value;
+                OnPropertyChanged();
+            }
+
+
         }
     }
 }

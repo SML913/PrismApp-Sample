@@ -29,12 +29,13 @@
         
         <ListView Margin="10 10 10 10" ItemsSource="{Binding Employees}"
                   SelectedItem="{Binding SelectedEmployee,Mode=TwoWay}"
-                  DisplayMemberPath="FirstName"/>
+                  DisplayMemberPath="DisplayMember"
+                  SelectionMode="Single"/>
 
         <StackPanel Grid.Row="1"  Orientation="Horizontal">
-            <Button Width="100" Margin="25 5 10 5" Content="Add" Command="{Binding AddEmployeeNotificationCommand}"/>
-            <Button Width="100" Margin="10 5 5 5" Content="Edit" Command="{Binding EditEmployeeNotificationCommand}"
-                  />
+            <Button Width="75" Margin="10 5 5 5" Content="Add" Command="{Binding AddEmployeeNotificationCommand}"/>
+            <Button Width="75" Margin="10 5 5 5" Content="Edit" Command="{Binding EditEmployeeNotificationCommand}"/>
+            <Button Width="75" Margin="10 5 5 5" Content="Delete" Command="{Binding DeleteCommand}"/>
         </StackPanel>
     </Grid>
 </UserControl>

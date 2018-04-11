@@ -7,7 +7,10 @@ namespace UI.Data.Repositories
     {
         ObservableCollection<Employee> GetAll();
         Employee GetById(int employeeId);
+        void Add(Employee employee);
+        void Remove(Employee employee);
         void Save();
         bool HasChanges();
+        void ReloadEmployee(int employeeId);
     }
 }

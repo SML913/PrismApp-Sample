@@ -14,35 +14,37 @@ using UI.Wrappers;
 
 namespace UI.ViewModels
 {
-    public class EmployeeDetailViewModel:BindableBase, IEmployeeDetailViewModel,IInteractionRequestAware
+    public class EmployeeDetailViewModel : BindableBase, IEmployeeDetailViewModel, IInteractionRequestAware
     {
         private readonly IEmployeeRepository _employeeRepository;
         private readonly ICompanyRepository _companyRepository;
-        private CompanyWrapper _selectedCompany;
         private EmployeeWrapper _employee;
         private IEditNotification _notification;
         private bool _isDirty;
-        private ILookupService _lookupService;
-
+        private readonly ILookupService _lookupService;
+        private readonly IEventAggregator _eventAggregator;
+     
         public EmployeeDetailViewModel(
             IEventAggregator eventAggregator,
             IEmployeeRepository employeeRepository,
             ICompanyRepository companyRepository,
-            ILookupService  lookupService)
+            ILookupService lookupService)
         {
-            eventAggregator.GetEvent<EditEmployeeEvent>().Subscribe(LoadEmployee);
-            _employeeRepository = employeeRepository;   
+            _eventAggregator = eventAggregator;
+            _eventAggregator.GetEvent<EditEmployeeEvent>().Subscribe(LoadEmployee);
+            _eventAggregator.GetEvent<CompanySavedEvent>().Subscribe(ReloadCompanies);
+            _employeeRepository = employeeRepository;
             _companyRepository = companyRepository;
             _lookupService = lookupService;
             Companies = new ObservableCollection<LookupItem>();
-            
+
             SaveCommand = new DelegateCommand(OnSaveExecute, OnSaveCanExecute);
             CloseCommand = new DelegateCommand(OnCloseExecute);
-            
+           
             LoadCompanies();
         }
 
-
+      
 
 
 
@@ -51,7 +53,7 @@ namespace UI.ViewModels
         public void LoadCompanies()
         {
             Companies.Clear();
-            Companies.Add(new LookupItem.NullLocupItem{DisplayMember = "-"});
+            Companies.Add(new LookupItem.NullLocupItem {DisplayMember = "-"});
             var lookup = _lookupService.GetAllCompaniesLookup();
             foreach (var lookupItem in lookup)
             {
@@ -59,13 +61,43 @@ namespace UI.ViewModels
             }
 
         }
-        private void LoadEmployee(int employeeId)
+        private void ReloadCompanies(int companyId)
         {
-            var employee = _employeeRepository.GetById(employeeId);
-            Employee = new EmployeeWrapper(employee);
-
+           LoadCompanies();
         }
 
+        private void LoadEmployee(int employeeId)
+        {
+            if (Employee != null && Employee.Id == employeeId && employeeId > 0)
+            {
+                _employeeRepository.ReloadEmployee(employeeId);
+
+                IsDirty = _employeeRepository.HasChanges();
+                SaveCommand.RaiseCanExecuteChanged();
+            }
+
+            var employee = employeeId != 0 ? _employeeRepository.GetById(employeeId) : new Employee();
+            Employee = new EmployeeWrapper(employee);
+             if(employeeId==0)   _employeeRepository.Add(employee);
+
+
+        Employee.PropertyChanged += (s, e) =>
+        {
+        if (!IsDirty)
+        {
+            IsDirty = _companyRepository.HasChanges();
+             SaveCommand.RaiseCanExecuteChanged();
+        }
+        if (e.PropertyName == nameof(Employee.FirstName)||
+            e.PropertyName == nameof(Employee.LastName) ||
+            e.PropertyName == nameof(Employee.CompanyId))
+        {
+            IsDirty = _employeeRepository.HasChanges();
+            SaveCommand.RaiseCanExecuteChanged();
+        }
+    };
+}
+        
         private void OnCloseExecute()
         {
             _notification.Confirmed = true;
@@ -80,22 +112,27 @@ namespace UI.ViewModels
         private void OnSaveExecute()
         {
             _employeeRepository.Save();
+            IsDirty = _employeeRepository.HasChanges();
+            SaveCommand.RaiseCanExecuteChanged();
+            _eventAggregator.GetEvent<EmployeeSavedEvent>().Publish(Employee.Id);
 
         }
 
         #endregion
 
         #region Properties
-        public bool IsDirdty
+
+       
+        public bool IsDirty
         {
             get { return _isDirty; }
             set
             {
                 SetProperty(ref _isDirty, value);
 
-                ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
             }
         }
+      
         public EmployeeWrapper Employee
         {
             get { return _employee; }
@@ -104,16 +141,7 @@ namespace UI.ViewModels
                 SetProperty(ref _employee, value);
             }
         }
-        public CompanyWrapper SelectedCompany
-        {
-            get { return _selectedCompany; }
-
-            set
-            {
-                SetProperty(ref _selectedCompany, value);
-                IsDirdty = _employeeRepository.HasChanges();
-            }
-        }
+    
       
         public ObservableCollection<LookupItem> Companies { get; set; }
         public INotification Notification
@@ -128,9 +156,10 @@ namespace UI.ViewModels
 
         public DelegateCommand SaveCommand { get; }
         public DelegateCommand CloseCommand { get; }
+      
 
         #endregion
 
-        
+
     }
 }

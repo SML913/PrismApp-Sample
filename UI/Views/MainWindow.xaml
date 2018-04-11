@@ -7,12 +7,10 @@
         WindowStartupLocation="CenterScreen"
         xmlns:prism="http://prismlibrary.com/"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-                      ResizeMode="NoResize"
+                    
         mc:Ignorable="d"
         prism:ViewModelLocator.AutoWireViewModel="True"
-        Title="MainWindow" Height="400" Width="600">
-
-  
+        Title="The Awsome AddEdit App" Height="400" Width="600">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -28,8 +26,12 @@
                 <MenuItem Header="New company" />
             </MenuItem>
         </Menu>
-        <view:EmployeeListView Grid.Row="1" Grid.Column="0" />
-        <view:CompanyListView Grid.Row="1" Grid.Column="1"/>
+        <GroupBox Header="Employees" Grid.Row="1" Grid.Column="0">
+            <view:EmployeeListView/>
+        </GroupBox>
+        <GroupBox Header="Companies" Grid.Row="1" Grid.Column="1">
+            <view:CompanyListView/>
+        </GroupBox>
     </Grid>
 </controls:MetroWindow>
 

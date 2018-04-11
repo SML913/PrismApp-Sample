@@ -13,8 +13,18 @@ namespace UI.Data.Repositories
         {
             _context = context;
         }
+
+        public void Add(Company company)
+        {
+            _context.Companies.Add(company);
+        }
+        public void Remove(Company company)
+        {
+            _context.Companies.Remove(company);
+        }
         public Company GetById(int companyId)
         {
+           
             return _context.Set<Company>().Find(companyId);
         }
 
@@ -30,7 +40,6 @@ namespace UI.Data.Repositories
 
         public ObservableCollection<Company> GetAll()
         {
-          //  return new ObservableCollection<Employee>(_context.Set<Company>());
           return new ObservableCollection<Company>(_context.Set<Company>());
         }
 
@@ -39,10 +48,7 @@ namespace UI.Data.Repositories
             
             var dbEntityEntry = _context.ChangeTracker.Entries<Company>()
                 .SingleOrDefault(db => db.Entity.Id == companyId);
-            if (dbEntityEntry != null)
-            {
-                 dbEntityEntry.Reload();
-            }
+            dbEntityEntry?.Reload();
         }
     }
 }

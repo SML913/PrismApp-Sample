@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
 using Microsoft.Practices.Prism.Mvvm;
 using Model;
 using Prism.Commands;
@@ -19,46 +16,62 @@ namespace UI.ViewModels
     public class CompanyListViewModel:BindableBase, ICompanyListViewModel
     {
         private readonly ICompanyRepository _companyrepository;
-        private Company _selectedCompany;
+        private LookupItem _selectedCompany;
         private string _title;
         
         private readonly IEventAggregator _eventAggregator;
-        private ObservableCollection<Company> _companies;
+        private ObservableCollection<LookupItem> _companies;
+        private ILookupService _lookupService;
 
         public CompanyListViewModel(IEventAggregator eventAggregator,
-            ICompanyRepository  companyRepository)
+            ICompanyRepository  companyRepository,
+            ILookupService lookupService)
         {
             _eventAggregator = eventAggregator;
-            _eventAggregator.GetEvent<CompanySavedEvent>().Subscribe(UpdateCompany);
             _companyrepository = companyRepository;
-            Companies = new ObservableCollection<Company>();
+            _lookupService = lookupService;
 
+            _eventAggregator.GetEvent<CompanySavedEvent>().Subscribe(UpdateCompany);
+            
+            Companies = new ObservableCollection<LookupItem>();
             CompanyNotificationRequest = new InteractionRequest<IEditNotification>();
+
             EditCompanyNotificationCommand = new DelegateCommand(RaiseEditDialog,EditCanExecute);
             AddCompanyNotificationCommand = new DelegateCommand(RaiseAddDialog);
+            DeleteCommand = new DelegateCommand(OnDeleteExecute, OnDeleteCanExecute);
+           
             Load();
         }
 
 
 
 
+
+
         #region Methodes
+      
         private void UpdateCompany(int companyId)
         {
             Companies.Clear();
             _companyrepository.ReloadCompany(companyId);
-            Companies = _companyrepository.GetAll();
+            var companies = _lookupService.GetAllCompaniesLookup();
+            foreach (var company in companies)
+            {
+                Companies.Add(company);
+            }
         }
         public void Load()
         {
-            Companies = _companyrepository.GetAll();
+            var companies = _lookupService.GetAllCompaniesLookup();
+            foreach (var company in companies)
+            {
+                Companies.Add(company);
+            }
         }
         private bool EditCanExecute()
         {
             return SelectedCompany != null;
         }
-
-
         private void RaiseAddDialog()
         {
             _eventAggregator.GetEvent<EditCompanyEvent>().Publish(0);
@@ -72,8 +85,6 @@ namespace UI.ViewModels
                 }
             );
         }
-
-        
         private void RaiseEditDialog()
         {
             
@@ -90,6 +101,15 @@ namespace UI.ViewModels
            
             
         }
+        private bool OnDeleteCanExecute()
+        {
+            return SelectedCompany != null;
+        }
+
+        private void OnDeleteExecute()
+        {
+            throw new NotImplementedException();
+        }
 
         #endregion
 
@@ -98,12 +118,12 @@ namespace UI.ViewModels
         public InteractionRequest<IEditNotification> CompanyNotificationRequest { get; set; }
         public DelegateCommand EditCompanyNotificationCommand { get; set; }
         public DelegateCommand AddCompanyNotificationCommand { get; set; }
-
-
+      
+        public ICommand DeleteCommand { get; }
         #endregion
 
         #region Properties
-        public ObservableCollection<Company> Companies {
+        public ObservableCollection<LookupItem> Companies {
             get
             { return _companies; }
             set
@@ -115,13 +135,14 @@ namespace UI.ViewModels
             get { return _title; }
             set { SetProperty(ref _title, value); }
         }
-        public Company SelectedCompany
+        public LookupItem SelectedCompany
         {
             get { return _selectedCompany; }
             set
             {
                 SetProperty(ref _selectedCompany, value);
                 (EditCompanyNotificationCommand).RaiseCanExecuteChanged();
+                ((DelegateCommand)DeleteCommand).RaiseCanExecuteChanged();
 
             }
         }

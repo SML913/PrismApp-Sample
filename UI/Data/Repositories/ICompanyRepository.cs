@@ -8,6 +8,8 @@ namespace UI.Data.Repositories
         ObservableCollection<Company> GetAll();
         Company GetById(int companyId);
         void ReloadCompany(int companyId);
+        void Add(Company company);
+        void Remove(Company company);
         void Save();
         bool HasChanges();
     }

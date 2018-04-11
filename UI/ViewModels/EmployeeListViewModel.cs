@@ -8,41 +8,66 @@ using Prism.Interactivity.InteractionRequest;
 using UI.Data.Repositories;
 using UI.Event;
 using UI.Notifications;
+using UI.Services;
 
 namespace UI.ViewModels
 {
     public class EmployeeListViewModel : BindableBase, IEmployeeListViewModel
     {
         private readonly IEmployeeRepository _employeeRepository;
-        private Employee _selectedEmployee;
-        private string _title;
+        private LookupItem _selectedEmployee;
         private readonly IEventAggregator _eventAggregator;
+        private ObservableCollection<LookupItem> _employees;
+        private readonly ILookupService _lookupService;
 
         public EmployeeListViewModel( IEventAggregator eventAggregator,
-            IEmployeeRepository employeeRepository )
+            IEmployeeRepository employeeRepository ,
+            ILookupService lookupService
+            )
         {
             _employeeRepository = employeeRepository;
             _eventAggregator = eventAggregator;
-
-            Employees = new ObservableCollection<Employee>();
+            _lookupService = lookupService;
+            _eventAggregator.GetEvent<EmployeeSavedEvent>().Subscribe(UpdateEmployees);
+            Employees = new ObservableCollection<LookupItem>();
            
             EmployeeNotificationRequest = new InteractionRequest<IEditNotification>();
             EditEmployeeNotificationCommand = new DelegateCommand(RaiseEdiDialog,EditCanExecute);
             AddEmployeeNotificationCommand = new DelegateCommand(RaiseAddDialog);
+            DeleteCommand = new DelegateCommand(DeleteExecute, DeleteCanExecute);
+
             Load();
         }
 
-      
+
+
+
 
 
         #region Methodes
+        private void UpdateEmployees(int employeeId)
+        {
+           Employees.Clear();
+            _employeeRepository.ReloadEmployee(employeeId);
+
+            var employees= _lookupService.GetAllEmployeeLookup();
+            foreach (var employee in employees)
+            {
+                Employees.Add(employee);
+            }
+
+        }
         private bool EditCanExecute()
         {
             return SelectedEmployee != null;
         }
        public void Load()
         {
-            Employees = _employeeRepository.GetAll();
+            var employees = _lookupService.GetAllEmployeeLookup();
+            foreach (var employee in employees)
+            {
+                    Employees.Add(employee);
+            }
         }
         private void RaiseEdiDialog()
         {
@@ -65,26 +90,38 @@ namespace UI.ViewModels
             });
         }
 
+        private bool DeleteCanExecute()
+        {
+            return SelectedEmployee != null;
+        }
+
+        private void DeleteExecute()
+        {
+            throw new NotImplementedException();
+        }
         #endregion
 
 
 
         #region Properties
-        public string Title
-        {
-            get { return _title; }
-            set { SetProperty(ref _title, value); }
+      
+        public ObservableCollection<LookupItem> Employees {
+            get { return _employees; }
+            set { SetProperty(ref _employees, value); }
+            
         }
-        public ObservableCollection<Employee> Employees { get; set; }
-        public Employee SelectedEmployee
+        public LookupItem SelectedEmployee
         {
             get { return _selectedEmployee; }
             set
             {
                 SetProperty(ref _selectedEmployee, value); 
-                (EditEmployeeNotificationCommand).RaiseCanExecuteChanged();
+
+                EditEmployeeNotificationCommand.RaiseCanExecuteChanged();
+                DeleteCommand.RaiseCanExecuteChanged();
             }
         }
+
 
         #endregion
 
@@ -94,13 +131,14 @@ namespace UI.ViewModels
         public InteractionRequest<IEditNotification> EmployeeNotificationRequest { get; set; }
         public DelegateCommand EditEmployeeNotificationCommand { get; set; }
         public DelegateCommand AddEmployeeNotificationCommand { get; set; }
+        public DelegateCommand DeleteCommand { get; }
 
         #endregion
 
 
 
-     
-       
-        
+
+
+
     }
 }

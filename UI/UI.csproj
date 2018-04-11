@@ -115,10 +115,10 @@
     <Compile Include="Data\Repositories\IEmployeeRepository.cs" />
     <Compile Include="Event\AddCompanyEvent.cs" />
     <Compile Include="Event\AddEmployeeEvent.cs" />
-    <Compile Include="Event\AfterEmployeeEditEvent.cs" />
     <Compile Include="Event\CompanySavedEvent.cs" />
     <Compile Include="Event\EditCompanyEvent.cs" />
     <Compile Include="Event\EditEmployeeEvent.cs" />
+    <Compile Include="Event\EmployeeSavedEvent.cs" />
     <Compile Include="Notifications\IEditNotification.cs" />
     <Compile Include="Notifications\EditNotification.cs" />
     <Compile Include="Services\DialogService.cs" />

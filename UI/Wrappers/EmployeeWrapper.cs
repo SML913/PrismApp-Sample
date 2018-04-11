@@ -1,14 +1,10 @@
-﻿using Microsoft.Practices.Prism.Mvvm;
-using Model;
+﻿using Model;
+using UI.ViewModels;
 
 namespace UI.Wrappers
 {
-  public  class EmployeeWrapper:BindableBase
+    public  class EmployeeWrapper:ViewModelBase
     {
-        private string _firstName;
-        private string _lastName;
-        private int? _companyId;
-
         public EmployeeWrapper(Employee model)
         {
             Model = model;
@@ -21,8 +17,8 @@ namespace UI.Wrappers
             get { return Model?.FirstName; }
             set
             {
-                
-                SetProperty(ref _firstName, value);
+                Model.FirstName = value;
+                OnPropertyChanged();
             }
         }
         public string LastName {
@@ -30,9 +26,18 @@ namespace UI.Wrappers
             {
                 return Model?.LastName;
             }
-            set { SetProperty(ref _lastName, value); } 
+            set
+            {
+                Model.LastName = value;
+                OnPropertyChanged();
+            } 
         }
-        public int? CompanyId { get { return Model?.CompanyId; }
-            set { SetProperty(ref _companyId, value); } }
+        public int? CompanyId {
+            get { return Model?.CompanyId; }
+            set
+            {
+                Model.CompanyId = value;
+                OnPropertyChanged();
+            } }
     }
 }

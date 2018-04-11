@@ -8,7 +8,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     
-    <Grid >
+    <Grid Background="LightSlateGray">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -21,15 +21,18 @@
         </Grid.RowDefinitions>
 
         <Label Content="First Name" Margin="5 5 5 0"/>
-        <TextBox  Grid.Row="1" Text="{Binding Employee.FirstName,Mode=TwoWay}" Margin="5 5 5 5" />
+        <TextBox  Grid.Row="1" Text="{Binding Employee.FirstName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                  Margin="5 5 5 5" />
 
         <Label Grid.Row="2" Content="Last Name" Margin="5 5 5 0"/>
-        <TextBox  Grid.Row="3" Text="{Binding Employee.LastName,Mode=TwoWay}" Margin="5 5 5 5"/>
+        <TextBox  Grid.Row="3" Text="{Binding Employee.LastName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" 
+                  Margin="5 5 5 5"/>
 
         <Label Grid.Row="4" Content="Company" Margin="5 5 5 0"/>
         <ComboBox Grid.Row="5" ItemsSource="{Binding Companies}"
-                  SelectedItem="{Binding SelectedCompany,Mode=TwoWay}" 
                   DisplayMemberPath="DisplayMember"
+                  SelectedValuePath="Id"
+                  SelectedValue="{Binding Employee.CompanyId,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                   Margin="5 5 5 5"/>
         <StackPanel Grid.Row="7" Orientation="Horizontal">
             <Button Content="Save" Width="80" Margin="5 5 5 5" Command="{Binding SaveCommand}"/>

@@ -22,6 +22,7 @@ namespace UI.Views
             parentWindow.ResizeMode = ResizeMode.NoResize;
             parentWindow.MinHeight = 300;
             parentWindow.MinWidth = 300;
+            parentWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
         }
     }
 }

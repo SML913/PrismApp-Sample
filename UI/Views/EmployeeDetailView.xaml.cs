@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace UI.Views
 {
@@ -18,12 +19,11 @@ namespace UI.Views
         private void EmployeeDetailView_Loaded(object sender, RoutedEventArgs e)
         {
             if (!(Parent is Window parentWindow)) return;
-
             parentWindow.WindowStyle = WindowStyle.None;
             parentWindow.ResizeMode = ResizeMode.NoResize;
-
             parentWindow.MinWidth = 300;
             parentWindow.MinHeight = 300;
+            parentWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
         }
     }
 }

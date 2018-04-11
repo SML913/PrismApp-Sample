@@ -12,7 +12,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition />
+            <RowDefinition Height="150" />
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -24,15 +24,22 @@
                   Text="{Binding Company.Name,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Margin="5 5 5 5" />
 
 
-        <Label Grid.Row="2" Grid.ColumnSpan="2" Grid.Column="0" Content="Employees" Margin="5 5 5 0"/>
+        <ComboBox Grid.Row="2"  Grid.Column="0"  Margin="5 5 5 0"
+                  ItemsSource="{Binding AvailableEmployees}"
+                  DisplayMemberPath="DisplayMember"
+                  SelectedValuePath="Id"
+                  SelectedValue="{Binding SelecteEmployeeIdToAdd,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
         <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Vertical">
-            <Button Content="Add Employee"  Margin=" 10 10 10 10"/>
-            <Button Content="Delete Employee" Margin="10 10 10 10 "/>
+            <Button Content="Add Employee"  Margin=" 10 10 10 10" Command="{Binding AddEmployeeCommand}"/>
+            <Button Content="Delete Employee" Margin="10 10 10 10 " Command="{Binding DeleteCommand}"/>
         </StackPanel>
-        <ListView Width="250"  Grid.Row="3" Grid.Column="0" ItemsSource="{Binding Employees}"
-                  SelectedItem="{Binding SelectedCompany,Mode=TwoWay}" 
-                  DisplayMemberPath="FirstName"
+        <ScrollViewer   Grid.Row="3" Grid.Column="0">
+            <ListView Width="160"  ItemsSource="{Binding Employees}"
+                  SelectedItem="{Binding SelectedEmployee,Mode=TwoWay}" 
+                  DisplayMemberPath="DisplayMember"
+                      SelectionMode="Single"
                   Margin="5 5 5 5"/>
+        </ScrollViewer>
         <StackPanel Grid.Row="4" Grid.ColumnSpan="2" Grid.Column="0" Orientation="Horizontal">
             <Button Content="Save" Width="80" Margin="5 5 5 5" Command="{Binding SaveCommand}"/>
             <Button Content="Close" Width="80" Margin="5 5 5 5" Command="{Binding CloseCommand}"/>
