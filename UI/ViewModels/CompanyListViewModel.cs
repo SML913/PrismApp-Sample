@@ -13,7 +13,7 @@ using UI.Services;
 
 namespace UI.ViewModels
 {
-    public class CompanyListViewModel:BindableBase, ICompanyListViewModel
+    public class CompanyListViewModel:BindableBase
     {
         private readonly ICompanyRepository _companyrepository;
         private LookupItem _selectedCompany;
@@ -21,15 +21,18 @@ namespace UI.ViewModels
         
         private readonly IEventAggregator _eventAggregator;
         private ObservableCollection<LookupItem> _companies;
-        private ILookupService _lookupService;
+        private readonly ICommonService _commonService;
+        private readonly IDialogService _dialogService;
 
         public CompanyListViewModel(IEventAggregator eventAggregator,
             ICompanyRepository  companyRepository,
-            ILookupService lookupService)
+            IDialogService dialogService,
+            ICommonService commonService)
         {
             _eventAggregator = eventAggregator;
             _companyrepository = companyRepository;
-            _lookupService = lookupService;
+            _commonService = commonService;
+            _dialogService = dialogService;
 
             _eventAggregator.GetEvent<CompanySavedEvent>().Subscribe(UpdateCompany);
             
@@ -49,25 +52,26 @@ namespace UI.ViewModels
 
 
         #region Methodes
-      
+        public void Load()
+        {
+            var companies = _commonService.GetAllCompaniesLookup();
+            Companies.Clear();
+            foreach (var company in companies)
+            {
+                Companies.Add(company);
+            }
+        }
         private void UpdateCompany(int companyId)
         {
             Companies.Clear();
             _companyrepository.ReloadCompany(companyId);
-            var companies = _lookupService.GetAllCompaniesLookup();
+            var companies = _commonService.GetAllCompaniesLookup();
             foreach (var company in companies)
             {
                 Companies.Add(company);
             }
         }
-        public void Load()
-        {
-            var companies = _lookupService.GetAllCompaniesLookup();
-            foreach (var company in companies)
-            {
-                Companies.Add(company);
-            }
-        }
+      
         private bool EditCanExecute()
         {
             return SelectedCompany != null;
@@ -76,39 +80,42 @@ namespace UI.ViewModels
         {
             _eventAggregator.GetEvent<EditCompanyEvent>().Publish(0);
 
-            CompanyNotificationRequest.Raise(
-                new EditNotification()
-                    { Title = "Add Company" },
-                r =>
-                {
-                    if (r.Confirmed) { } else { }
-                }
-            );
+            CompanyNotificationRequest.Raise(new EditNotification() { Title = "Add Company" });
         }
         private void RaiseEditDialog()
         {
-            
             _eventAggregator.GetEvent<EditCompanyEvent>().Publish(SelectedCompany?.Id ?? 0);
            
-            CompanyNotificationRequest.Raise(
-                new EditNotification()
-                    { Title = "Edit Company" },
-                r =>
-                {
-                    if (r.Confirmed) { } else {  }
-                }
-            );
-           
-            
+            CompanyNotificationRequest.Raise(new EditNotification() { Title = "Edit Employee" });
         }
         private bool OnDeleteCanExecute()
         {
             return SelectedCompany != null;
         }
 
-        private void OnDeleteExecute()
+        private async void OnDeleteExecute()
         {
-            throw new NotImplementedException();
+          var answer = await _dialogService.
+                ShowOkCancelDialog("Warning",
+                $"Do you really want to delete {SelectedCompany.DisplayMember} company ?");
+            if (answer)
+            {
+                if (!_commonService.IsCompanyReferenced(SelectedCompany.Id))
+                {
+                    var company = _companyrepository.GetById(SelectedCompany.Id);
+                    _companyrepository.Remove(company);
+                    _companyrepository.Save();
+                    SelectedCompany = null;
+                    Load();
+                }
+                else
+                {
+                  await  _dialogService.ShowInfoDialog($"Can't delete {SelectedCompany.DisplayMember} company." +
+                      "Company is referenced by at least one Employee");
+                }
+
+            }
+
         }
 
         #endregion

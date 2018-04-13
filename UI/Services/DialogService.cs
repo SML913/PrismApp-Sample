@@ -1,25 +1,31 @@
-﻿using System.Windows;
+﻿using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 
 namespace UI.Services
 {
-    public class DialogService
+    public class DialogService : IDialogService
     {
-        public DialogService()
+        private MetroWindow MetroWindow=> (MetroWindow)Application.Current.MainWindow;
+       
+  
+
+        public async Task<bool> ShowOkCancelDialog(string title, string message)
         {
-             
+          var result = await MetroWindow.ShowMessageAsync(title,message,MessageDialogStyle.AffirmativeAndNegative);
+            if (result == MessageDialogResult.Affirmative) return true;
+            return false;
         }
 
-        public Window Window { get; set; }
-
-        public  void ShowDialog()
+        public async Task ShowInfoDialog(string message)
         {
-           
+           await MetroWindow.ShowMessageAsync("Info",message);
         }
 
-        public  void CloseDialog()
-        {
-            Window.Close();
-        }
+
+       
     }
 
    

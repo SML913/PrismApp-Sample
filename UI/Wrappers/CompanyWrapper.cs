@@ -10,7 +10,9 @@ namespace UI.Wrappers
 
         public CompanyWrapper(Company model)
         {
+            
             Model = model;
+           
         }
         public Company Model {get;}
 

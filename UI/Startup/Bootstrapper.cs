@@ -20,7 +20,8 @@ namespace UI.Startup
             base.ConfigureContainer();
             Container.RegisterType<ICompanyRepository, CompanyRepository>();
             Container.RegisterType<IEmployeeRepository, EmployeeRepository>();
-            Container.RegisterType<ILookupService, LookupService>();
+            Container.RegisterType<ICommonService, CommonService>();
+            Container.RegisterType<IDialogService, DialogService>();
         }
 
         protected override void InitializeShell()

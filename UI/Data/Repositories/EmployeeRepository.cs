@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using DataAccess;
 using Model;
+using System.Collections.Generic;
 
 namespace UI.Data.Repositories
 {
@@ -19,9 +20,9 @@ namespace UI.Data.Repositories
             return _context.Set<Employee>().Find(employeeId);
         }
 
-        public ObservableCollection<Employee> GetAll()
+        public IEnumerable<Employee> GetAll()
         {
-            return new ObservableCollection<Employee>( _context.Set<Employee>());
+            return _context.Employees.ToList();
         }
 
         public void Save()

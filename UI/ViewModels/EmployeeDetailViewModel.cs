@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Windows.Input;
 using Prism.Events;
 using Model;
 using Prism.Commands;
@@ -14,28 +13,28 @@ using UI.Wrappers;
 
 namespace UI.ViewModels
 {
-    public class EmployeeDetailViewModel : BindableBase, IEmployeeDetailViewModel, IInteractionRequestAware
+    public class EmployeeDetailViewModel : BindableBase, IInteractionRequestAware
     {
         private readonly IEmployeeRepository _employeeRepository;
         private readonly ICompanyRepository _companyRepository;
         private EmployeeWrapper _employee;
         private IEditNotification _notification;
         private bool _isDirty;
-        private readonly ILookupService _lookupService;
+        private readonly ICommonService _commonService;
         private readonly IEventAggregator _eventAggregator;
      
         public EmployeeDetailViewModel(
             IEventAggregator eventAggregator,
             IEmployeeRepository employeeRepository,
             ICompanyRepository companyRepository,
-            ILookupService lookupService)
+            ICommonService commonService)
         {
             _eventAggregator = eventAggregator;
             _eventAggregator.GetEvent<EditEmployeeEvent>().Subscribe(LoadEmployee);
             _eventAggregator.GetEvent<CompanySavedEvent>().Subscribe(ReloadCompanies);
             _employeeRepository = employeeRepository;
             _companyRepository = companyRepository;
-            _lookupService = lookupService;
+            _commonService = commonService;
             Companies = new ObservableCollection<LookupItem>();
 
             SaveCommand = new DelegateCommand(OnSaveExecute, OnSaveCanExecute);
@@ -54,7 +53,7 @@ namespace UI.ViewModels
         {
             Companies.Clear();
             Companies.Add(new LookupItem.NullLocupItem {DisplayMember = "-"});
-            var lookup = _lookupService.GetAllCompaniesLookup();
+            var lookup = _commonService.GetAllCompaniesLookup();
             foreach (var lookupItem in lookup)
             {
                 Companies.Add(lookupItem);

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using Microsoft.Practices.Prism.Mvvm;
 using Model;
 using Prism.Commands;
@@ -12,22 +11,25 @@ using UI.Services;
 
 namespace UI.ViewModels
 {
-    public class EmployeeListViewModel : BindableBase, IEmployeeListViewModel
+    public class EmployeeListViewModel : BindableBase
     {
         private readonly IEmployeeRepository _employeeRepository;
         private LookupItem _selectedEmployee;
         private readonly IEventAggregator _eventAggregator;
         private ObservableCollection<LookupItem> _employees;
-        private readonly ILookupService _lookupService;
+        private readonly ICommonService _commonService;
+        private readonly IDialogService _dialogService;
 
         public EmployeeListViewModel( IEventAggregator eventAggregator,
             IEmployeeRepository employeeRepository ,
-            ILookupService lookupService
+            IDialogService dialogService,
+            ICommonService commonService
             )
         {
             _employeeRepository = employeeRepository;
             _eventAggregator = eventAggregator;
-            _lookupService = lookupService;
+            _commonService = commonService;
+            _dialogService = dialogService;
             _eventAggregator.GetEvent<EmployeeSavedEvent>().Subscribe(UpdateEmployees);
             Employees = new ObservableCollection<LookupItem>();
            
@@ -50,7 +52,7 @@ namespace UI.ViewModels
            Employees.Clear();
             _employeeRepository.ReloadEmployee(employeeId);
 
-            var employees= _lookupService.GetAllEmployeeLookup();
+            var employees= _commonService.GetAllEmployeeLookup();
             foreach (var employee in employees)
             {
                 Employees.Add(employee);
@@ -63,7 +65,8 @@ namespace UI.ViewModels
         }
        public void Load()
         {
-            var employees = _lookupService.GetAllEmployeeLookup();
+            var employees = _commonService.GetAllEmployeeLookup();
+            Employees.Clear();
             foreach (var employee in employees)
             {
                     Employees.Add(employee);
@@ -73,21 +76,13 @@ namespace UI.ViewModels
         {
             _eventAggregator.GetEvent<EditEmployeeEvent>().Publish(SelectedEmployee?.Id ?? 0);
 
-            EmployeeNotificationRequest.Raise(new EditNotification() { Title = "Edit Employee" }, r =>
-            {
-                if (r.Confirmed) { }
-                else { }
-            });
+            EmployeeNotificationRequest.Raise(new EditNotification() { Title = "Edit Employee" });
         }
         private void RaiseAddDialog()
         {
             _eventAggregator.GetEvent<EditEmployeeEvent>().Publish(0);
 
-            EmployeeNotificationRequest.Raise(new EditNotification() { Title = "Add Employee" }, r =>
-            {
-                if (r.Confirmed) { }
-                else { }
-            });
+            EmployeeNotificationRequest.Raise(new EditNotification() { Title = "Add Employee" });
         }
 
         private bool DeleteCanExecute()
@@ -95,10 +90,18 @@ namespace UI.ViewModels
             return SelectedEmployee != null;
         }
 
-        private void DeleteExecute()
+        private async void DeleteExecute()
         {
-            throw new NotImplementedException();
+            var answer = await _dialogService.ShowOkCancelDialog("Warning",
+                $"Do you really want to delete the employee {SelectedEmployee.DisplayMember}  ?");
+            if (!answer) return;
+            var employee = _employeeRepository.GetById(SelectedEmployee.Id);
+            _employeeRepository.Remove(employee);
+            _employeeRepository.Save();
+            SelectedEmployee = null;
+            Load();
         }
+
         #endregion
 
 

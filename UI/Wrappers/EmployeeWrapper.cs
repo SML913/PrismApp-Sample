@@ -10,7 +10,9 @@ namespace UI.Wrappers
             Model = model;
         }
         public Employee Model { get; }
-        public int Id { get { return Model.Id; }  }
+        public int Id
+        { get
+            { return Model.Id; }  }
 
         public string FirstName
         {

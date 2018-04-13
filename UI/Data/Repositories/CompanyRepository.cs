@@ -2,6 +2,7 @@
 using System.Linq;
 using DataAccess;
 using Model;
+using System.Collections.Generic;
 
 namespace UI.Data.Repositories
 {
@@ -14,6 +15,17 @@ namespace UI.Data.Repositories
             _context = context;
         }
 
+       
+      
+        public Company GetById(int companyId)
+        {
+           
+            return _context.Companies.Find(companyId);
+        }
+        public IEnumerable<Company> GetAll()
+        {
+            return _context.Companies.ToList();
+        }
         public void Add(Company company)
         {
             _context.Companies.Add(company);
@@ -22,27 +34,14 @@ namespace UI.Data.Repositories
         {
             _context.Companies.Remove(company);
         }
-        public Company GetById(int companyId)
-        {
-           
-            return _context.Set<Company>().Find(companyId);
-        }
-
         public void Save()
         {
             _context.SaveChanges();
         }
-
         public bool HasChanges()
         {
           return  _context.ChangeTracker.HasChanges();
         }
-
-        public ObservableCollection<Company> GetAll()
-        {
-          return new ObservableCollection<Company>(_context.Set<Company>());
-        }
-
         public void ReloadCompany(int companyId)
         {
             

@@ -10,7 +10,7 @@
                     
         mc:Ignorable="d"
         prism:ViewModelLocator.AutoWireViewModel="True"
-        Title="The Awsome AddEdit App" Height="400" Width="600">
+        Title="The Awsome CRUD App" Height="400" Width="600">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>

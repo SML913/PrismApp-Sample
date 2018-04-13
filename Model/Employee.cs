@@ -4,7 +4,8 @@ namespace Model
 {
     public class Employee
     {
-        public int Id { get; set; }
+        public int Id
+        { get;set; }
         [Required]
         [StringLength(50)]
         public string FirstName { get; set; }

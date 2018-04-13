@@ -1,11 +1,12 @@
 ﻿using System.Collections.ObjectModel;
 using Model;
+using System.Collections.Generic;
 
 namespace UI.Data.Repositories
 {
     public interface IEmployeeRepository
     {
-        ObservableCollection<Employee> GetAll();
+        IEnumerable<Employee> GetAll();
         Employee GetById(int employeeId);
         void Add(Employee employee);
         void Remove(Employee employee);

@@ -117,4 +117,3 @@ E:\App\UI\bin\Debug\MahApps.Metro.dll
 E:\App\UI\bin\Debug\MahApps.Metro.pdb
 E:\App\UI\bin\Debug\MahApps.Metro.xml
 E:\App\UI\obj\Debug\App.baml
-E:\App\UI\bin\Debug\DataAccess.dll.config

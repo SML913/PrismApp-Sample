@@ -23,15 +23,16 @@
         <TextBox  Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="0"
                   Text="{Binding Company.Name,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Margin="5 5 5 5" />
 
-
-        <ComboBox Grid.Row="2"  Grid.Column="0"  Margin="5 5 5 0"
+        <!--<Label Grid.Row="2" Content="Select Employee" Margin="10 5 20 0"/>-->
+        <Button Content="Add Employee" Grid.Column="1" Grid.Row="2"  Margin=" 10 10 10 10" Command="{Binding AddEmployeeCommand}"/>
+        <ComboBox Grid.Row="2"  Grid.Column="0"  Margin="10 10 10 0"
                   ItemsSource="{Binding AvailableEmployees}"
                   DisplayMemberPath="DisplayMember"
-                  SelectedValuePath="Id"
-                  SelectedValue="{Binding SelecteEmployeeIdToAdd,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                  SelectedItem="{Binding SelectedEmployeeToAdd,Mode=TwoWay}"/>
+                  
         <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Vertical">
-            <Button Content="Add Employee"  Margin=" 10 10 10 10" Command="{Binding AddEmployeeCommand}"/>
-            <Button Content="Delete Employee" Margin="10 10 10 10 " Command="{Binding DeleteCommand}"/>
+           
+            <Button Content="Delete Employee" Margin="10 10 10 10 " Command="{Binding DeleteCommand}" CommandParameter="{Binding ElementName=CompanyDetail}"/>
         </StackPanel>
         <ScrollViewer   Grid.Row="3" Grid.Column="0">
             <ListView Width="160"  ItemsSource="{Binding Employees}"

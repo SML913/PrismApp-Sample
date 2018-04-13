@@ -2,7 +2,7 @@
 
 namespace UI.ViewModels
 {
-   public class MainWindowViewModel:BindableBase
+   public class MainWindowViewModel
     {
         public MainWindowViewModel()
         {

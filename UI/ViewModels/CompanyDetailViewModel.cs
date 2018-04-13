@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Windows.Input;
 using Model;
 using Prism.Commands;
 using Prism.Events;
@@ -15,7 +13,7 @@ using BindableBase = Prism.Mvvm.BindableBase;
 
 namespace UI.ViewModels
 {
-    public class CompanyDetailViewModel:BindableBase, ICompanyDetailViewModel,IInteractionRequestAware
+    public class CompanyDetailViewModel:BindableBase,IInteractionRequestAware
     {
         private readonly ICompanyRepository _companyRepository;
         private IEditNotification _notification;
@@ -26,33 +24,47 @@ namespace UI.ViewModels
         private readonly IEmployeeRepository _employeeRepository;
         private LookupItem _selectedEmployee;
         private ObservableCollection<LookupItem> _availableEmployees;
-        private ILookupService _lookupService;
-        private int _employeeId;
+        private LookupItem _selectedEmployeeToAdd;
+        private readonly IDialogService _dialogService;
 
         public CompanyDetailViewModel(
             IEmployeeRepository employeeRepository,
             IEventAggregator eventAggregator,
             ICompanyRepository companyRepository,
-            ILookupService lookupService)
+           IDialogService dialogServicel)
         {
             _eventAggregator = eventAggregator;
             _eventAggregator.GetEvent<EditCompanyEvent>().Subscribe(LoadCompany);
+            _eventAggregator.GetEvent<EmployeeSavedEvent>().Subscribe(OnEmployeeSaved);
             _companyRepository = companyRepository;
             _employeeRepository = employeeRepository;
-            _lookupService = lookupService;
+           _dialogService = dialogServicel;
 
             Employees=new ObservableCollection<LookupItem>();
             AvailableEmployees = new ObservableCollection<LookupItem>();
+
             SaveCommand = new DelegateCommand(OnSaveExecute, OnSaveCanExecute);
             DeleteCommand = new DelegateCommand(OnDeleteExecute, OnDeleteCanExecute);
             CloseCommand = new DelegateCommand(OnCloseExecute);
-            AddEmployeeCommand = new DelegateCommand(OnAddEmployeeExecute);
+            AddEmployeeCommand = new DelegateCommand(OnAddEmployeeExecute, OnAddEmployeeCanExecute);
         }
+
+       
 
 
 
         #region Methodes
+
+
       
+        private void OnEmployeeSaved(int employeeId)
+        {
+            //throw new NotImplementedException();
+
+            //TODO update the available employees
+        
+        }
+
         private void LoadCompany(int companyId)
         {
             if (Company != null && Company.Id == companyId && companyId>0)
@@ -127,26 +139,55 @@ namespace UI.ViewModels
             _eventAggregator.GetEvent<CompanySavedEvent>().Publish(Company.Id);
         }
 
-        private bool OnDeleteCanExecute()
+        private bool OnDeleteCanExecute( )
         {
             return SelectedEmployee != null;
         }
 
-        private void OnDeleteExecute()
+        private async void OnDeleteExecute()
         {
-            throw new NotImplementedException();
+            var answer = await _dialogService.ShowOkCancelDialog("Warning",
+                $"Do you really want to remove the employee {SelectedEmployee.DisplayMember}  ?");
+            if (answer)
+            {
+                var empoyee = _employeeRepository.GetById(SelectedEmployee.Id);
+                empoyee.CompanyId = null;
+                _employeeRepository.Save();
+                AvailableEmployees.Add(SelectedEmployee);
+                if (Employees.Contains(SelectedEmployee))
+                {
+                    Employees.Remove(SelectedEmployee);
+                }
+                }
         }
+
         private void OnAddEmployeeExecute()
         {
-          var selectedEmployee =   _lookupService.GetEmployeeByIdLookup(SelecteEmployeeIdToAdd);
-            AvailableEmployees.Remove(selectedEmployee);
-            Employees.Add(selectedEmployee);
+            if (SelectedEmployeeToAdd == null)
+            { 
+                _dialogService.ShowInfoDialog("Please select an Employee to add.");
+            return;
+                }
 
-            var employeeToAdd = _employeeRepository.GetById(SelecteEmployeeIdToAdd);
-           Company.Employees.Add(employeeToAdd);
+        Employees.Add(SelectedEmployeeToAdd);
+            var employeeToAdd = _employeeRepository.GetById(SelectedEmployeeToAdd.Id);
+            Company.Employees.Add(employeeToAdd);
+
+            if (AvailableEmployees.Contains(SelectedEmployeeToAdd))
+            {
+                AvailableEmployees.Remove(SelectedEmployeeToAdd);
+            }
+           
+          
 
             IsDirty = _companyRepository.HasChanges();
             SaveCommand.RaiseCanExecuteChanged();
+        }
+        private bool OnAddEmployeeCanExecute()
+        {
+            return SelectedEmployeeToAdd != null;
+
+
         }
         #endregion
 
@@ -160,8 +201,8 @@ namespace UI.ViewModels
 
         public ObservableCollection<LookupItem> AvailableEmployees
         {
-            get
-            { return _availableEmployees; }
+            get { return _availableEmployees; }
+
             set { SetProperty(ref _availableEmployees, value); }
         }
         public LookupItem SelectedEmployee
@@ -170,7 +211,7 @@ namespace UI.ViewModels
             set
             {
                 SetProperty(ref _selectedEmployee, value);
-                ((DelegateCommand)DeleteCommand).RaiseCanExecuteChanged();
+                DeleteCommand.RaiseCanExecuteChanged();
             }
         }
         public CompanyWrapper Company
@@ -188,12 +229,13 @@ namespace UI.ViewModels
             }
         }
 
-        public int SelecteEmployeeIdToAdd
+        public LookupItem SelectedEmployeeToAdd
         {
-            get { return _employeeId; }
+            get { return _selectedEmployeeToAdd; }
             set
             {
-                SetProperty(ref _employeeId, value);
+                SetProperty(ref _selectedEmployeeToAdd, value);
+                AddEmployeeCommand.RaiseCanExecuteChanged();
                 
             }
         }
@@ -211,8 +253,8 @@ namespace UI.ViewModels
 
         #region commands
         public DelegateCommand SaveCommand { get; }
-        public ICommand CloseCommand { get; }
-        public ICommand DeleteCommand { get; }
+        public DelegateCommand CloseCommand { get; }
+        public DelegateCommand DeleteCommand { get; }
         public DelegateCommand AddEmployeeCommand { get; }
 
 
