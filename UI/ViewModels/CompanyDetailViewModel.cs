@@ -15,7 +15,10 @@ namespace UI.ViewModels
 {
     public class CompanyDetailViewModel:BindableBase,IInteractionRequestAware
     {
-        private readonly ICompanyRepository _companyRepository;
+
+
+        #region private field
+
         private IEditNotification _notification;
         private CompanyWrapper _company;
         private bool _isDirty;
@@ -26,21 +29,30 @@ namespace UI.ViewModels
         private ObservableCollection<LookupItem> _availableEmployees;
         private LookupItem _selectedEmployeeToAdd;
         private readonly IDialogService _dialogService;
+        private readonly ICompanyRepository _companyRepository;
+        private ObservableCollection<LookupItem> _emloyeesOnAddedState;
+
+        #endregion
+
 
         public CompanyDetailViewModel(
+            ICompanyRepository companyRepository,
             IEmployeeRepository employeeRepository,
             IEventAggregator eventAggregator,
-            ICompanyRepository companyRepository,
            IDialogService dialogServicel)
         {
+            _employeeRepository = employeeRepository;
+            _companyRepository = companyRepository;
+            _dialogService = dialogServicel;
+
             _eventAggregator = eventAggregator;
             _eventAggregator.GetEvent<EditCompanyEvent>().Subscribe(LoadCompany);
             _eventAggregator.GetEvent<EmployeeSavedEvent>().Subscribe(OnEmployeeSaved);
-            _companyRepository = companyRepository;
-            _employeeRepository = employeeRepository;
-           _dialogService = dialogServicel;
+
+            
 
             Employees=new ObservableCollection<LookupItem>();
+            EmployeesOnAddedState=new ObservableCollection<LookupItem>();
             AvailableEmployees = new ObservableCollection<LookupItem>();
 
             SaveCommand = new DelegateCommand(OnSaveExecute, OnSaveCanExecute);
@@ -59,32 +71,22 @@ namespace UI.ViewModels
       
         private void OnEmployeeSaved(int employeeId)
         {
-            //throw new NotImplementedException();
-
-            //TODO update the available employees
-        
+            _employeeRepository.ReloadEmployee(employeeId);
         }
 
         private void LoadCompany(int companyId)
         {
-            if (Company != null && Company.Id == companyId && companyId>0)
-            {
-                _companyRepository.ReloadCompany(companyId);
-
-                IsDirty = _companyRepository.HasChanges();
-                SaveCommand.RaiseCanExecuteChanged();
-            }
-
+           
             var company = companyId != 0 ? _companyRepository.GetById(companyId) : new Company();
-            Company =  new CompanyWrapper(company);
-             if(companyId==0) _companyRepository.Add(company);
-          
+            Company = new CompanyWrapper(company);
+
+            if (companyId == 0) _companyRepository.Add(company);
 
 
-
-            var employees = _employeeRepository.GetAll();
             Employees.Clear();
             AvailableEmployees.Clear();
+            var employees = _employeeRepository.GetAll();
+
             foreach (var employee in employees)
             {
                 if (employee.CompanyId == null)
@@ -112,75 +114,119 @@ namespace UI.ViewModels
             {
                 if (!IsDirty)
                 {
-                    IsDirty = _companyRepository.HasChanges();
+                  
+                    IsDirty = _employeeRepository.HasChanges();
                     SaveCommand.RaiseCanExecuteChanged();
                 }
                 if (e.PropertyName == nameof(Company.Name))
                 {
+                  
                     IsDirty = _companyRepository.HasChanges();
                     SaveCommand.RaiseCanExecuteChanged();
                 }
             };
         }
-        private void OnCloseExecute()
+        private void OnCloseExecute( )
         {
+            if (Company != null && Company.Id > 0)
+            {
+                _companyRepository.ReloadCompany(Company.Id);
+            }
+            EmployeesOnAddedState.Clear();
+
             _notification.Confirmed = true;
             FinishInteraction?.Invoke();
         }
         private bool OnSaveCanExecute()
         {
-            return _companyRepository.HasChanges();
+            return IsDirty||_companyRepository.HasChanges();
         }
         private void OnSaveExecute()
         {
-           _companyRepository.Save();
+            if (EmployeesOnAddedState.Count != 0)
+            {
+                foreach (var employee in EmployeesOnAddedState)
+                {
+                    var employeeToAdd = _employeeRepository.GetById(employee.Id);
+                      _companyRepository.AttachEmployee(employeeToAdd);
+                        Company.Employees.Add(employeeToAdd);
+                    
+                }
+                
+            }
+
+            _companyRepository.Save();
             IsDirty = _companyRepository.HasChanges();
             SaveCommand.RaiseCanExecuteChanged();
             _eventAggregator.GetEvent<CompanySavedEvent>().Publish(Company.Id);
         }
-
         private bool OnDeleteCanExecute( )
         {
             return SelectedEmployee != null;
         }
-
-        private async void OnDeleteExecute()
+        private  void OnDeleteExecute()
         {
-            var answer = await _dialogService.ShowOkCancelDialog("Warning",
-                $"Do you really want to remove the employee {SelectedEmployee.DisplayMember}  ?");
+            //var answer = await _dialogService.ShowOkCancelDialog("Warning",
+            //    $"Do you really want to remove the employee {SelectedEmployee.DisplayMember}  ?");
+
+            var answer = _dialogService.ShowOkCancelDialogUsingMsgBox("Warning",
+               $"Do you really want to remove the employee {SelectedEmployee.DisplayMember}  ?"); 
             if (answer)
             {
-                var empoyee = _employeeRepository.GetById(SelectedEmployee.Id);
-                empoyee.CompanyId = null;
-                _employeeRepository.Save();
-                AvailableEmployees.Add(SelectedEmployee);
-                if (Employees.Contains(SelectedEmployee))
+                if (EmployeesOnAddedState.Contains(SelectedEmployee))
                 {
-                    Employees.Remove(SelectedEmployee);
+                    var employee = SelectedEmployee;
+                    if (Employees.Contains(SelectedEmployee))
+                    {
+                        AvailableEmployees.Add(employee);
+                        Employees.Remove(employee);
+                     
+                    }
+                    EmployeesOnAddedState.Remove(SelectedEmployee);
+
+                    if (EmployeesOnAddedState.Count == 0)
+                    {
+                        IsDirty = _employeeRepository.HasChanges();
+                        SaveCommand.RaiseCanExecuteChanged();
+                    }
+                    return;
                 }
+                
+                    var empoyee = _employeeRepository.GetById(SelectedEmployee.Id);
+                    empoyee.CompanyId = null;
+                    _employeeRepository.Save();
+                  _eventAggregator.GetEvent<EmployeeStateChanged>().Publish(empoyee.Id);
+                    AvailableEmployees.Add(SelectedEmployee);
+                    if (Employees.Contains(SelectedEmployee))
+                    {
+                        Employees.Remove(SelectedEmployee);
+                    }
+               
+
+
                 }
         }
-
         private void OnAddEmployeeExecute()
         {
+         
             if (SelectedEmployeeToAdd == null)
             { 
-                _dialogService.ShowInfoDialog("Please select an Employee to add.");
-            return;
-                }
+               // _dialogService.ShowInfoDialog("Please select an Employee to add.");
 
-        Employees.Add(SelectedEmployeeToAdd);
-            var employeeToAdd = _employeeRepository.GetById(SelectedEmployeeToAdd.Id);
-            Company.Employees.Add(employeeToAdd);
+               _dialogService.ShowInfoDialogUsingMsgBox("Please select an Employee to add.");
+                   return;
+            }
+            
+           
 
+            EmployeesOnAddedState.Add(SelectedEmployeeToAdd);
+            Employees.Add(SelectedEmployeeToAdd);
             if (AvailableEmployees.Contains(SelectedEmployeeToAdd))
             {
                 AvailableEmployees.Remove(SelectedEmployeeToAdd);
             }
-           
-          
 
-            IsDirty = _companyRepository.HasChanges();
+            IsDirty = true;//_companyRepository.HasChanges();
             SaveCommand.RaiseCanExecuteChanged();
         }
         private bool OnAddEmployeeCanExecute()
@@ -199,6 +245,11 @@ namespace UI.ViewModels
             set { SetProperty(ref _employees, value); }
         }
 
+        public ObservableCollection<LookupItem> EmployeesOnAddedState
+        {
+            get { return _emloyeesOnAddedState; }
+            set { SetProperty(ref _emloyeesOnAddedState, value); }
+        }
         public ObservableCollection<LookupItem> AvailableEmployees
         {
             get { return _availableEmployees; }

@@ -111,14 +111,17 @@
     </ApplicationDefinition>
     <Compile Include="Data\Repositories\CompanyRepository.cs" />
     <Compile Include="Data\Repositories\EmployeeRepository.cs" />
+    <Compile Include="Data\Repositories\GenericRepository.cs" />
     <Compile Include="Data\Repositories\ICompanyRepository.cs" />
     <Compile Include="Data\Repositories\IEmployeeRepository.cs" />
+    <Compile Include="Data\Repositories\IGenericRepository.cs" />
     <Compile Include="Event\AddCompanyEvent.cs" />
     <Compile Include="Event\AddEmployeeEvent.cs" />
     <Compile Include="Event\CompanySavedEvent.cs" />
     <Compile Include="Event\EditCompanyEvent.cs" />
     <Compile Include="Event\EditEmployeeEvent.cs" />
     <Compile Include="Event\EmployeeSavedEvent.cs" />
+    <Compile Include="Event\EmployeeStateChanged.cs" />
     <Compile Include="Notifications\IEditNotification.cs" />
     <Compile Include="Notifications\EditNotification.cs" />
     <Compile Include="Services\DialogService.cs" />

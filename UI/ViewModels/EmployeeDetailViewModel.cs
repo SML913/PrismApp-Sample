@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Data.Entity.Core.Objects.DataClasses;
 using Prism.Events;
 using Model;
 using Prism.Commands;
@@ -15,6 +16,8 @@ namespace UI.ViewModels
 {
     public class EmployeeDetailViewModel : BindableBase, IInteractionRequestAware
     {
+        #region private Fields
+
         private readonly IEmployeeRepository _employeeRepository;
         private readonly ICompanyRepository _companyRepository;
         private EmployeeWrapper _employee;
@@ -22,7 +25,10 @@ namespace UI.ViewModels
         private bool _isDirty;
         private readonly ICommonService _commonService;
         private readonly IEventAggregator _eventAggregator;
-     
+
+        #endregion
+
+
         public EmployeeDetailViewModel(
             IEventAggregator eventAggregator,
             IEmployeeRepository employeeRepository,
@@ -32,6 +38,7 @@ namespace UI.ViewModels
             _eventAggregator = eventAggregator;
             _eventAggregator.GetEvent<EditEmployeeEvent>().Subscribe(LoadEmployee);
             _eventAggregator.GetEvent<CompanySavedEvent>().Subscribe(ReloadCompanies);
+            _eventAggregator.GetEvent<EmployeeStateChanged>().Subscribe(OnEmployeeStateChanged);
             _employeeRepository = employeeRepository;
             _companyRepository = companyRepository;
             _commonService = commonService;
@@ -43,12 +50,15 @@ namespace UI.ViewModels
             LoadCompanies();
         }
 
-      
 
 
 
         #region Methodes
 
+        private void OnEmployeeStateChanged(int employeeId)
+        {
+            _employeeRepository.ReloadEmployee(employeeId);
+        }
         public void LoadCompanies()
         {
             Companies.Clear();
@@ -62,19 +72,17 @@ namespace UI.ViewModels
         }
         private void ReloadCompanies(int companyId)
         {
+            var relatedEmployees = _companyRepository.GetById(companyId).Employees;
+            foreach (var employee in relatedEmployees)
+            {
+                _employeeRepository.ReloadEmployee(employee.Id);
+            }
            LoadCompanies();
         }
 
         private void LoadEmployee(int employeeId)
         {
-            if (Employee != null && Employee.Id == employeeId && employeeId > 0)
-            {
-                _employeeRepository.ReloadEmployee(employeeId);
-
-                IsDirty = _employeeRepository.HasChanges();
-                SaveCommand.RaiseCanExecuteChanged();
-            }
-
+           
             var employee = employeeId != 0 ? _employeeRepository.GetById(employeeId) : new Employee();
             Employee = new EmployeeWrapper(employee);
              if(employeeId==0)   _employeeRepository.Add(employee);
@@ -99,6 +107,12 @@ namespace UI.ViewModels
         
         private void OnCloseExecute()
         {
+            if (Employee != null && Employee.Id > 0)
+            {
+                _employeeRepository.ReloadEmployee(Employee.Id);
+                
+            }
+
             _notification.Confirmed = true;
             FinishInteraction?.Invoke();
         }

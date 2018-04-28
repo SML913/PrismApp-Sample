@@ -22,11 +22,24 @@ namespace UI.Services
         public async Task ShowInfoDialog(string message)
         {
            await MetroWindow.ShowMessageAsync("Info",message);
+
+        }
+        
+        public  bool ShowOkCancelDialogUsingMsgBox(string title, string message)
+        {
+            var result = MessageBox.Show( message, title, MessageBoxButton.OKCancel);
+            if (result == MessageBoxResult.OK) return true;
+            return false;
+        }
+
+        public void   ShowInfoDialogUsingMsgBox(string message)
+        {
+             MessageBox.Show( message,"Info");
         }
 
 
-       
+
     }
 
-   
+
 }

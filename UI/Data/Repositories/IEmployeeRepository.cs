@@ -1,17 +1,11 @@
-﻿using System.Collections.ObjectModel;
-using Model;
-using System.Collections.Generic;
+﻿using Model;
 
 namespace UI.Data.Repositories
 {
-    public interface IEmployeeRepository
+    public interface IEmployeeRepository:IGenericRepository<Employee>
     {
-        IEnumerable<Employee> GetAll();
-        Employee GetById(int employeeId);
-        void Add(Employee employee);
-        void Remove(Employee employee);
-        void Save();
-        bool HasChanges();
         void ReloadEmployee(int employeeId);
+        void AttachCompany(Company company);
+
     }
 }

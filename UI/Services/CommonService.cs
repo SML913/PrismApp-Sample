@@ -66,5 +66,7 @@ namespace UI.Services
         {
             return  _context.Employees.FirstOrDefault(e => e.CompanyId == companyId)!=null;
         }
+
+        
     }
 }

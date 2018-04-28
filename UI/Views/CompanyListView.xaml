@@ -29,14 +29,18 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <ListView Margin="10 10 10 10" ItemsSource="{Binding Companies}"
+        <ListView x:Name="ListView" Margin="10 10 10 10" ItemsSource="{Binding Companies}"
                   SelectedItem="{Binding SelectedCompany,Mode=TwoWay}"
-                  DisplayMemberPath="DisplayMember"
+                  DisplayMemberPath="DisplayMember" 
                   SelectionMode="Single">
-          
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseDoubleClick">
+                    <i:InvokeCommandAction Command="{Binding EditCompanyNotificationCommand}" CommandParameter="{Binding ElementName=ListView,Path=SelectedItem}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
         </ListView>
         
-        <StackPanel Grid.Row="1"  Orientation="Horizontal">
+        <StackPanel Grid.Row="1"  Orientation="Horizontal" HorizontalAlignment="Center">
             <Button Width="75" Margin="10 5 5 5" Content="Add" Command="{Binding AddCompanyNotificationCommand}"/>
             <Button Width="75" Margin="10 5 5 5" Content="Edit" Command="{Binding EditCompanyNotificationCommand}"/>
             <Button Width="75" Margin="10 5 5 5" Content="Delete" Command="{Binding DeleteCommand}"/>

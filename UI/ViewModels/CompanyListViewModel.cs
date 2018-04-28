@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Microsoft.Practices.Prism.Mvvm;
 using Model;
@@ -15,14 +14,19 @@ namespace UI.ViewModels
 {
     public class CompanyListViewModel:BindableBase
     {
+
+        #region private field
+
         private readonly ICompanyRepository _companyrepository;
         private LookupItem _selectedCompany;
         private string _title;
-        
+
         private readonly IEventAggregator _eventAggregator;
         private ObservableCollection<LookupItem> _companies;
         private readonly ICommonService _commonService;
         private readonly IDialogService _dialogService;
+
+        #endregion
 
         public CompanyListViewModel(IEventAggregator eventAggregator,
             ICompanyRepository  companyRepository,

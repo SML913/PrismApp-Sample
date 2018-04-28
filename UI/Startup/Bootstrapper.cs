@@ -20,13 +20,15 @@ namespace UI.Startup
             base.ConfigureContainer();
             Container.RegisterType<ICompanyRepository, CompanyRepository>();
             Container.RegisterType<IEmployeeRepository, EmployeeRepository>();
+           
+
             Container.RegisterType<ICommonService, CommonService>();
             Container.RegisterType<IDialogService, DialogService>();
         }
 
         protected override void InitializeShell()
         {
-            Application.Current.MainWindow.Show();
+            if (Application.Current.MainWindow != null) Application.Current.MainWindow.Show();
         }
     }
 }

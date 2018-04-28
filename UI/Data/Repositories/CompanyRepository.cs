@@ -1,53 +1,57 @@
-﻿using System.Collections.ObjectModel;
-using System.Linq;
+﻿using System.Linq;
 using DataAccess;
 using Model;
 using System.Collections.Generic;
+using System.Data.Entity;
+using UI.Services;
 
 namespace UI.Data.Repositories
 {
-    public class CompanyRepository : ICompanyRepository
+    public class CompanyRepository :  GenericRepository<Company,BusinessDbContext>, ICompanyRepository
     {
-        private readonly BusinessDbContext _context;
-
-        public CompanyRepository(BusinessDbContext context)
-        {
-            _context = context;
-        }
-
-       
-      
-        public Company GetById(int companyId)
-        {
-           
-            return _context.Companies.Find(companyId);
-        }
-        public IEnumerable<Company> GetAll()
-        {
-            return _context.Companies.ToList();
-        }
-        public void Add(Company company)
-        {
-            _context.Companies.Add(company);
-        }
-        public void Remove(Company company)
-        {
-            _context.Companies.Remove(company);
-        }
-        public void Save()
-        {
-            _context.SaveChanges();
-        }
-        public bool HasChanges()
-        {
-          return  _context.ChangeTracker.HasChanges();
-        }
-        public void ReloadCompany(int companyId)
+        
+        public CompanyRepository(BusinessDbContext context,
+            IDialogService dialogService):base(context,dialogService)
         {
             
-            var dbEntityEntry = _context.ChangeTracker.Entries<Company>()
-                .SingleOrDefault(db => db.Entity.Id == companyId);
-            dbEntityEntry?.Reload();
+        }
+
+        public void AttachEmployee(Employee employee)
+        {
+            try
+            {
+                Context.Employees.Attach(employee);
+            }
+            catch
+            {
+                DialogService.ShowInfoDialogUsingMsgBox("An error has occurred. Can't atach employee entity");
+            }
+
+        }
+     
+        public void ReloadCompany(int companyId)
+        {
+            try
+            {
+                var dbEntityEntry = Context.ChangeTracker.Entries<Company>()
+                    .SingleOrDefault(db => db.Entity.Id == companyId);
+                dbEntityEntry?.Reload();
+            }
+            catch
+            {
+                DialogService.ShowInfoDialogUsingMsgBox("An error has occurred. Can't reload company entity");
+            }
+
+        }
+
+        public override IEnumerable<Company> GetAll()
+        {
+            return Context.Companies.Include(c => c.Employees).ToList();
+        }
+
+        public override Company GetById(int companyId)
+        {
+            return Context.Companies.Include(c=> c.Employees).Single(c=> c.Id==companyId);
         }
     }
 }

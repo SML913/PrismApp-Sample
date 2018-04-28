@@ -10,5 +10,6 @@ namespace UI.Services
         IEnumerable<LookupItem> GetAllEmployeeLookup();
         LookupItem GetCompanyByIdLookup(int companyId);
         LookupItem GetEmployeeByIdLookup(int employeeId);
+       
     }
 }
